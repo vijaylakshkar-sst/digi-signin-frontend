@@ -1,6 +1,5 @@
 "use client";
 
-import { useSidebar } from "@/context/SidebarContext";
 import { useAuth } from "@/context/AuthContext"; // 👈 import your auth hook
 import AppHeader from "@/layout/AppHeader";
 import AppSidebar from "@/layout/AppSidebar";
@@ -13,7 +12,7 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isExpanded, isHovered, isMobileOpen } = useSidebar();
+  // const { isExpanded, isHovered, isMobileOpen } = useSidebar();
   const { user, loading } = useAuth(); // 👈 from AuthContext
   const router = useRouter();
 
@@ -25,11 +24,13 @@ export default function AdminLayout({
   }, [user, loading, router]);
 
   // Dynamic class for main content margin based on sidebar state
-  const mainContentMargin = isMobileOpen
-    ? "ml-0"
-    : isExpanded || isHovered
-    ? "lg:ml-[290px]"
-    : "lg:ml-[90px]";
+  // const mainContentMargin = isMobileOpen
+  //   ? "ml-0"
+  //   : isExpanded || isHovered
+  //   ? "lg:ml-[290px]"
+  //   : "lg:ml-[90px]";
+
+  const mainContentMargin = "ml-0";
 
   if (loading) {
     return (
@@ -46,8 +47,10 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen xl:flex">
       {/* Sidebar and Backdrop */}
-      <AppSidebar />
-      <Backdrop />
+      <div className="block lg:hidden">
+        <AppSidebar />
+        <Backdrop />
+      </div>
       {/* Main Content Area */}
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${mainContentMargin}`}
@@ -55,7 +58,7 @@ export default function AdminLayout({
         {/* Header */}
         <AppHeader />
         {/* Page Content */}
-        <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+        <div className="p-4 mx-auto max md:p-6">
           {children}
         </div>
       </div>
